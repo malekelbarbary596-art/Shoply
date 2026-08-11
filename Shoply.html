@@ -1,0 +1,705 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Shoply - قارن الأسعار بسهولة</title>
+    <style>
+        :root {
+            --dark-olive: #2E2910;
+            --deep-green: #2C5745;
+            --cream-bg: #EBE3A7;
+            --warm-orange: #EB7D00;
+            --card-bg: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--cream-bg);
+            margin: 0;
+            padding: 0;
+            color: var(--dark-olive);
+        }
+
+        header {
+            background-color: var(--dark-olive);
+            color: var(--cream-bg);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .search-box input {
+            padding: 0.6rem 1rem;
+            width: 300px;
+            border-radius: 6px;
+            border: 1px solid var(--cream-bg);
+            background-color: #fbf9ed;
+            color: var(--dark-olive);
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .search-box input:focus {
+            border-color: var(--warm-orange);
+        }
+
+        .lang-btn {
+            background-color: var(--warm-orange);
+            color: #fff;
+            border: none;
+            padding: 0.5rem 0.9rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: opacity 0.2s;
+            text-transform: uppercase;
+        }
+
+        .lang-btn:hover {
+            opacity: 0.9;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 2.5rem 1rem;
+            background-color: var(--deep-green);
+            color: var(--cream-bg);
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Category Section Styles (Now on Top) */
+        .categories-section {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(46, 41, 16, 0.15);
+        }
+
+        .categories-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--dark-olive);
+            margin-bottom: 1rem;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 1rem;
+        }
+
+        .category-card {
+            background-color: var(--card-bg);
+            border: 1px solid rgba(46, 41, 16, 0.15);
+            border-radius: 10px;
+            padding: 1rem 0.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .category-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--warm-orange);
+            box-shadow: 0 4px 12px rgba(235, 125, 0, 0.15);
+        }
+
+        .category-card.active {
+            background-color: var(--deep-green);
+            color: white;
+            border-color: var(--deep-green);
+        }
+
+        .category-icon {
+            font-size: 1.8rem;
+        }
+
+        .category-name {
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.2rem;
+            box-shadow: 0 4px 10px rgba(46, 41, 16, 0.08);
+            border: 1px solid rgba(46, 41, 16, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 0.8rem;
+            transition: transform 0.2s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .product-image-container {
+            width: 100%;
+            height: 180px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f9f8f0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .product-title {
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--dark-olive);
+            line-height: 1.4;
+            height: 2.8em;
+            overflow: hidden;
+        }
+
+        .store-name {
+            font-size: 0.85rem;
+            color: #666;
+            font-weight: bold;
+        }
+
+        .rating-price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+
+        .price {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: var(--deep-green);
+        }
+
+        .product-rating {
+            font-size: 0.9rem;
+            color: var(--warm-orange);
+            font-weight: bold;
+        }
+
+        .badge-best {
+            align-self: flex-start;
+            background-color: #fde8d0;
+            color: var(--warm-orange);
+            font-weight: bold;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            border: 1px solid var(--warm-orange);
+        }
+
+        .btn-buy {
+            background-color: var(--deep-green);
+            color: white;
+            padding: 0.6rem;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        .btn-buy:hover {
+            background-color: #204234;
+        }
+
+        /* External search styling */
+        .external-search-box {
+            grid-column: 1 / -1;
+            background: #fff8e7;
+            border: 2px dashed var(--warm-orange);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .external-search-box h3 {
+            margin-top: 0;
+            color: var(--dark-olive);
+        }
+
+        .external-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .ext-btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            font-size: 0.95rem;
+            transition: opacity 0.2s;
+        }
+
+        .ext-btn:hover { opacity: 0.85; }
+        .ext-amazon { background-color: #FF9900; color: #000; }
+        .ext-noon { background-color: #FEEE00; color: #000; }
+        .ext-jumia { background-color: #F68B1E; }
+        .ext-btech { background-color: #004282; }
+        .ext-dubizzle { background-color: #bebebe; color: #ff0101; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h2>Shoply</h2>
+        <div class="header-actions">
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="ابحث عن أي منتج..." oninput="filterProducts()">
+            </div>
+            <button class="lang-btn" onclick="toggleLanguage()" id="lang-btn">EN</button>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1 id="hero-title">قارن أسعار المنتجات من مختلف المتاجر في مكان واحد!</h1>
+        <p id="hero-subtitle">اكتب اسم المنتج وسنوجهك مباشرة لأفضل سعر في المتجر الأصلي.</p>
+    </section>
+
+    <div class="container">
+        <!-- Categories Container (TOP) -->
+        <div class="categories-section" id="categories-container"></div>
+
+        <!-- Products Container (BOTTOM) -->
+        <div class="product-grid" id="product-container"></div>
+    </div>
+
+    <script>
+        let currentLang = 'ar';
+        let selectedCategory = 'all';
+
+        const i18n = {
+            ar: {
+                title: "Shoply - قارن الأسعار بسهولة",
+                searchPlaceholder: "ابحث عن أي منتج...",
+                heroTitle: "قارن أسعار المنتجات من مختلف المتاجر في مكان واحد!",
+                heroSubtitle: "اكتب اسم المنتج وسنوجهك مباشرة لأفضل سعر في المتجر الأصلي.",
+                viewProduct: "عرض المنتج في",
+                extSearchTitle: "🔍 البحث المباشر عن",
+                extSearchTitleEnd: "في المتاجر الخارجية:",
+                extSearchDesc: "انقر للبحث الفوري عن هذا المنتج مباشرة داخل المتاجر التالية:",
+                searchOn: "ابحث في",
+                langBtn: "EN",
+                currency: "ج.م",
+                categoriesTitle: "الأقسام والتصنيفات"
+            },
+            en: {
+                title: "Shoply - Compare Prices Easily",
+                searchPlaceholder: "Search for any product...",
+                heroTitle: "Compare product prices from various stores in one place!",
+                heroSubtitle: "Type a product name and we will direct you to the best deal.",
+                viewProduct: "View product on",
+                extSearchTitle: "🔍 Direct search for",
+                extSearchTitleEnd: "on external stores:",
+                extSearchDesc: "Click to search for this product directly inside these stores:",
+                searchOn: "Search on",
+                langBtn: "AR",
+                currency: "EGP",
+                categoriesTitle: "Browse Categories"
+            }
+        };
+
+        const categoriesData = [
+            { id: "all", name: { ar: "الكل", en: "All" }, icon: "🏷️" },
+            { id: "electronics", name: { ar: "إلكترونيات", en: "Electronics" }, icon: "⚡" },
+            { id: "mobiles", name: { ar: "موبايلات", en: "Mobiles" }, icon: "📱" },
+            { id: "fashion", name: { ar: "أزياء", en: "Fashion" }, icon: "👕" },
+            { id: "accessories", name: { ar: "إكسسوارات", en: "Accessories" }, icon: "⌚" },
+            { id: "home", name: { ar: "المنزل", en: "Home" }, icon: "🏠" }
+        ];
+
+        const productsData = [
+            {
+                category: "accessories",
+                title: { ar: "سماعات لاسلكية Anker Soundcore P20i", en: "Anker Soundcore P20i Wireless Earbuds" },
+                price: 950,
+                rating: "4.5",
+                storeKey: "jumia",
+                storeName: { ar: "جوميا (Jumia)", en: "Jumia" },
+                badge: { ar: "الأرخص", en: "Cheapest" },
+                image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400"
+            },
+            {
+                category: "accessories",
+                title: { ar: "Nillkin جراب كام شيلد برو من نيلكن لجهاز آيفون 16 برو ماكس - أسود", en: "Nillkin CamShield Pro Case for iPhone 16 Pro Max - Black" },
+                price: 449,
+                rating: "5",
+                storeKey: "jumia",
+                storeName: { ar: "جوميا (Jumia)", en: "Jumia" },
+                badge: { ar: "", en: "" },
+                image: "https://eg.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/99/1149411/1.jpg?3565"
+            },
+            {
+                category: "fashion",
+                title: { ar: "ADIDAS RESPONSE RUNNER 2 Shoes", en: "ADIDAS RESPONSE RUNNER 2 Shoes" },
+                price: 2999,
+                rating: "4.5",
+                storeKey: "jumia",
+                storeName: { ar: "جوميا (Jumia)", en: "Jumia" },
+                badge: { ar: "", en: "" },
+                image: "https://eg.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/64/6086431/1.jpg?6251"
+            },
+             {
+                category: "fashion",
+                title: { ar: "Al Aseel Men's One Pocket Loose Pants", en: "Al Aseel Men's One Pocket Loose Pants" },
+                price: 400,
+                rating: "5",
+                storeKey: "amazon",
+                storeName: { ar: "أمازون (Amazon)", en: "Amazon" },
+                badge: { ar: "", en: "" },
+                image: "https://m.media-amazon.com/images/I/41+bfcXojmL._AC_SX385_.jpg"
+            },
+             {
+                category: "fashion",
+                title: { ar: "Wide Leg Linen Pants", en: "Wide Leg Linen Pants" },
+                price: 300,
+                rating: "1",
+                storeKey: "jumia",
+                storeName: { ar: "جوميا (Jumia)", en: "Jumia" },
+                badge: { ar: "", en: "" },
+                image: "https://eg.jumia.is/unsafe/fit-in/680x680/filters:fill(white)/product/94/4945331/1.jpg?3249"
+            },
+             {
+                category: "fashion",
+                title: { ar: "Relaxed Fit T-shirt For Men – Cotton - Half Sleeves Crew Neck Tee", en: "Relaxed Fit T-shirt For Men – Cotton - Half Sleeves Crew Neck Tee" },
+                price: 365,
+                rating: "4.4",
+                storeKey: "noon",
+                storeName: { ar: "نون (Noon)", en: "Noon" },
+                badge: { ar: "", en: "" },
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUcXJsMcQHiCcqEsDYVi_92UkgxwJU2CcZzPd1tmtlJw&s"
+            },
+            {
+                category: "accessories",
+                title: { ar: "سماعات Sony WH-CH520 Wireless", en: "Sony WH-CH520 Wireless Headphones" },
+                price: 1200,
+                rating: "4.7",
+                storeKey: "noon",
+                storeName: { ar: "نون (Noon)", en: "Noon" },
+                badge: { ar: "", en: "" },
+                image: "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400"
+            },
+            {
+                category: "electronics",                            
+                title: { ar: "VGA RTX 3050 6GB DDR6 DUAL OC", en: "VGA RTX 3050 6GB DDR6 DUAL OC" },
+                price: 13800.00,
+                rating: "4.3",
+                storeKey: "noon",
+                storeName: { ar: "نون (Noon)", en: "Noon" },
+                badge: { ar: "", en: "" },
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRB5wUqygYR91BqimYfSgjCe6WSrn4qpfPZSmW3gX8kyw&s=10"
+            },
+            {
+                category: "electronics",                            
+                title: { ar: "P310 1TB PCIe Gen4 NVMe 2280 M.2 SSD, PCIe Gen 4 x4 speeds 7100MB/s Read, 6000MB/s Write, M.2 2280 Form Factor, 1TB Capacity | CT1000P310SSD8 1 TB", en: "P310 1TB PCIe Gen4 NVMe 2280 M.2 SSD, PCIe Gen 4 x4 speeds 7100MB/s Read, 6000MB/s Write, M.2 2280 Form Factor, 1TB Capacity | CT1000P310SSD8 1 TB" },
+                price: 7655.00,
+                rating: "5",
+                storeKey: "noon",
+                storeName: { ar: "نون (Noon)", en: "Noon" },
+                badge: { ar: "", en: "" },
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQRbNBV5TKFsi3uQSdca4vhkUO-nheFZTrSbbgQ4vnP0A&s"
+            },
+            {
+                category: "electronics",                            
+                title: { ar: "قرص صلب داخلي SSD SATA SA510 الأزرق - SATA III 6 Gb/s، 2.5 7mm سرعة تصل إلى 560 MB/s - WDS100T3B0A-00AXR0", en: "Blue SA510 SATA Internal Solid State Drive SSD - SATA III 6 Gb/s, 2.5 7mm, Up to 560 MB/s - WDS100T3B0A-00AXR0 1 TB" },
+                price: 6555.00,
+                rating: "4",
+                storeKey: "noon",
+                storeName: { ar: "نون (Noon)", en: "Noon" },
+                badge: { ar: "", en: "" },
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAUiB1Nk-3bB3HQ_Uk1NZdkcu5u0KUr6l539Cyb6du8Q&s"
+            },
+            {
+                category: "electronics",                            
+                title: { ar: "ROG Strix G16 G615LR Gaming Laptop Intel Core Ultra 7 255HX Processor, 32 GB RAM, 1TB SSD, 12 GB NVIDIA RTX 5070Ti, 16inch FHD+ 165Hz Display, Windows 11 Home, English Keyboard, 1 Year Warranty | G615LR-RV052W Volt Green", en: "ROG Strix G16 G615LR Gaming Laptop Intel Core Ultra 7 255HX Processor, 32 GB RAM, 1TB SSD, 12 GB NVIDIA RTX 5070Ti, 16inch FHD+ 165Hz Display, Windows 11 Home, English Keyboard, 1 Year Warranty | G615LR-RV052W Volt Green" },
+                price: 148697.64,
+                rating: "4.2",
+                storeKey: "noon",
+                storeName: { ar: "نون (Noon)", en: "Noon" },
+                badge: { ar: "", en: "" },
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTO3v77SH5Yu7jgO30BsQA7SJEJ6ZzkYK0UaX6OzD93yA&s=10"
+            },
+            {
+                category: "electronics",                            
+                title: { ar: "fanxiang 2TB NVMe M.2 SSD, Up to 5000MB/s, PCIe Gen4 x4 | Graphite Cooling Sticker, M.2 2280, Internal Solid State Drives, PS5 Compatible, Desktop & Laptop Compatible, S690Q", en: "fanxiang 2TB NVMe M.2 SSD, Up to 5000MB/s, PCIe Gen4 x4 | Graphite Cooling Sticker, M.2 2280, Internal Solid State Drives, PS5 Compatible, Desktop & Laptop Compatible, S690Q" },
+                price: 22454.00,
+                rating: "4.5",
+                storeKey: "amazon",
+                storeName: { ar: "أمازون (Amazon)", en: "Amazon" },
+                badge: { ar: "", en: "" },
+                image: "https://m.media-amazon.com/images/I/51uRiwMgHyL._AC_SL1500_.jpg"
+            },
+            {
+                category: "electronics",                            
+                title: { ar: "Gigabyte GeForce RTX 4090 Gaming OC 24G Graphics Card, 3X WINDFORCE Fans, 24GB 384-bit GDDR6X, GV-N4090GAMING OC-24GD Video Card", en: "Gigabyte GeForce RTX 4090 Gaming OC 24G Graphics Card, 3X WINDFORCE Fans, 24GB 384-bit GDDR6X, GV-N4090GAMING OC-24GD Video Card" },
+                price: 181326,
+                rating: "4.4",
+                storeKey: "noon",
+                storeName: { ar: "أمازون (Amazon)", en: "Amazon" },
+                badge: { ar: "", en: "" },
+                image: "https://m.media-amazon.com/images/I/711vU2IrEuL._AC_SX425_.jpg"
+            },
+            {
+                category: "electronics",                            
+                title: { ar: "VGA RTX 3050 8GB DDR6 v2 OC", en: "VGA RTX 3050 6GB DDR6 DUAL OC" },
+                price: 15850,
+                rating: "4.6",
+                storeKey: "amazon",
+                storeName: { ar: "أمازون (Amazon)", en: "Amazon" },
+                badge: { ar: "", en: "" },
+                image: "https://m.media-amazon.com/images/I/81OofBXaYbL._AC_SX569_.jpg"
+            },
+                        {
+                category: "electronics",                            
+                title: { ar: "ASUS DUAL-RTX3050-O6G NVIDIA GEFORCE RTX 3050 6G 6GB GDDR6", en: "ASUS DUAL-RTX3050-O6G NVIDIA GEFORCE RTX 3050 6G 6GB GDDR6" },
+                price: 14831.00,
+                rating: "4.3",
+                storeKey: "amazon",
+                storeName: { ar: "أمازون (Amazon)", en: "Amazon" },
+                badge: { ar: "", en: "" },
+                image: "https://m.media-amazon.com/images/I/81mwcITtHBL._AC_SX425_.jpg"
+            },
+            {
+                category: "accessories",
+                title: { ar: "سماعات JBL Tune 510BT Bluetooth", en: "JBL Tune 510BT Bluetooth Headphones" },
+                price: 1100,
+                rating: "4.3",
+                storeKey: "amazon",
+                storeName: { ar: "أمازون (Amazon)", en: "Amazon" },
+                badge: { ar: "", en: "" },
+                image: "https://images.unsplash.com/photo-1484704849700-f032a568e944?w=400"
+            },
+            {
+                category: "fashion",
+                title: { ar: "ISTANBUL MODEL Mens Plain T-Shirt, Round Neck Short Sleeve Tee, 95% Cotton & 5% spandex Stretch, Regular Fit, Pack of 1", en: "ISTANBUL MODEL Mens Plain T-Shirt, Round Neck Short Sleeve Tee, 95% Cotton & 5% spandex Stretch, Regular Fit, Pack of 1" },
+                price: 329,
+                rating: "3.9",
+                storeKey: "amazon",
+                storeName: { ar: "أمازون (Amazon)", en: "Amazon" },
+                badge: { ar: "", en: "" },
+                image: "https://m.media-amazon.com/images/I/51kpkktAomL._AC_SX522_.jpg"
+            },            
+            {
+                category: "mobiles",
+                title: { ar: "موبايل Apple iPhone 15 (128 GB)", en: "Apple iPhone 15 (128 GB)" },
+                price: 42000,
+                rating: "4.8",
+                storeKey: "amazon",
+                storeName: { ar: "أمازون (Amazon)", en: "Amazon" },
+                badge: { ar: "الأرخص", en: "Cheapest" },
+                image: "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=400"
+            },
+            {
+                category: "mobiles",
+                title: { ar: "موبايل Apple iPhone 15 Plus", en: "Apple iPhone 15 Plus" },
+                price: 45500,
+                rating: "4.6",
+                storeKey: "noon",
+                storeName: { ar: "نون (Noon)", en: "Noon" },
+                badge: { ar: "", en: "" },
+                image: "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400"
+            }
+        ];
+
+        function getDirectProductUrl(storeKey, queryTitle) {
+            const encodedTitle = encodeURIComponent(queryTitle);
+            const isAr = currentLang === 'ar';
+            
+            if (storeKey === "amazon") {
+                return `https://www.amazon.eg/s?k=${encodedTitle}`;
+            } else if (storeKey === "noon") {
+                return isAr 
+                    ? `https://www.noon.com/egypt-ar/search/?q=${encodedTitle}` 
+                    : `https://www.noon.com/egypt-en/search/?q=${encodedTitle}`;
+            } else if (storeKey === "jumia") {
+                return isAr 
+                    ? `https://www.jumia.com.eg/ar/catalog/?q=${encodedTitle}` 
+                    : `https://www.jumia.com.eg/catalog/?q=${encodedTitle}`;
+            } else if (storeKey === "dubizzle") {
+                return isAr 
+                    ?  `https://www.dubizzle.com.eg/ar/ads/q-${encodedTitle}` 
+                    : `https://www.dubizzle.com.eg/en/ads/q-${encodedTitle}`;
+            }
+            return "#";
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'ar' ? 'en' : 'ar';
+            
+            // Update HTML direction and language
+            document.documentElement.lang = currentLang;
+            document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+
+            // Update UI Texts
+            const t = i18n[currentLang];
+            document.getElementById('page-title').innerText = t.title;
+            document.getElementById('search-input').placeholder = t.searchPlaceholder;
+            document.getElementById('hero-title').innerText = t.heroTitle;
+            document.getElementById('hero-subtitle').innerText = t.heroSubtitle;
+            document.getElementById('lang-btn').innerText = t.langBtn;
+
+            filterProducts();
+        }
+
+        function selectCategory(catId) {
+            selectedCategory = catId;
+            filterProducts();
+        }
+
+        function renderCategories() {
+            const catContainer = document.getElementById('categories-container');
+            const t = i18n[currentLang];
+
+            let categoriesHTML = `<div class="categories-title">${t.categoriesTitle}</div><div class="categories-grid">`;
+            
+            categoriesData.forEach(cat => {
+                const isActive = cat.id === selectedCategory ? 'active' : '';
+                categoriesHTML += `
+                    <div class="category-card ${isActive}" onclick="selectCategory('${cat.id}')">
+                        <span class="category-icon">${cat.icon}</span>
+                        <span class="category-name">${cat.name[currentLang]}</span>
+                    </div>
+                `;
+            });
+            categoriesHTML += `</div>`;
+            catContainer.innerHTML = categoriesHTML;
+        }
+
+        function renderProducts(products, query = "") {
+            const container = document.getElementById('product-container');
+            container.innerHTML = '';
+            const t = i18n[currentLang];
+
+            // Render Categories at top
+            renderCategories();
+
+            // Render Products
+            if (products.length > 0) {
+                products.forEach(prod => {
+                    const card = document.createElement('div');
+                    card.className = 'product-card';
+
+                    const title = prod.title[currentLang];
+                    const storeName = prod.storeName[currentLang];
+                    const badge = prod.badge[currentLang];
+                    const directUrl = getDirectProductUrl(prod.storeKey, title);
+                    const formattedPrice = prod.price.toLocaleString() + ' ' + t.currency;
+
+                    card.innerHTML = `
+                        <div class="product-image-container">
+                            <img src="${prod.image}" alt="${title}" class="product-image">
+                        </div>
+                        <div class="product-info">
+                            <div class="store-name">${storeName}</div>
+                            <div class="product-title">${title}</div>
+                            ${badge ? `<span class="badge-best">${badge}</span>` : ''}
+                            <div class="rating-price-row">
+                                <span class="price">${formattedPrice}</span>
+                                <span class="product-rating">★ ${prod.rating}</span>
+                            </div>
+                        </div>
+                        <a href="${directUrl}" target="_blank" class="btn-buy">${t.viewProduct} ${storeName.split(' ')[0]} ↗</a>
+                    `;
+
+                    container.appendChild(card);
+                });
+            }
+
+            // Render External Search Box
+            if (query.trim() !== "") {
+                const extBox = document.createElement('div');
+                extBox.className = 'external-search-box';
+                const encodedQ = encodeURIComponent(query);
+                const isAr = currentLang === 'ar';
+
+                const amazonUrl = `https://www.amazon.eg/s?k=${encodedQ}`;
+                const noonUrl = isAr ? `https://www.noon.com/egypt-ar/search/?q=${encodedQ}` : `https://www.noon.com/egypt-en/search/?q=${encodedQ}`;
+                const jumiaUrl = isAr ? `https://www.jumia.com.eg/ar/catalog/?q=${encodedQ}` : `https://www.jumia.com.eg/catalog/?q=${encodedQ}`;
+                const dubizzleUrl = isAr ?  `https://www.dubizzle.com.eg/ar/ads/q-${encodedQ}` : `https://www.dubizzle.com.eg/en/ads/q-${encodedQ}`;
+                const btechUrl = isAr ? `https://btech.com/ar/s?q=${encodedQ}` : `https://btech.com/en/s?q=${encodedQ}`;
+
+                extBox.innerHTML = `
+                    <h3>${t.extSearchTitle} "${query}" ${t.extSearchTitleEnd}</h3>
+                    <p>${t.extSearchDesc}</p>
+                    <div class="external-links">
+                        <a href="${amazonUrl}" target="_blank" class="ext-btn ext-amazon">${t.searchOn} Amazon ↗</a>
+                        <a href="${noonUrl}" target="_blank" class="ext-btn ext-noon">${t.searchOn} Noon ↗</a>
+                        <a href="${jumiaUrl}" target="_blank" class="ext-btn ext-jumia">${t.searchOn} Jumia ↗</a>
+                        <a href="${btechUrl}" target="_blank" class="ext-btn ext-btech">${t.searchOn} B.TECH ↗</a>
+                        <a href="${dubizzleUrl}" target="_blank" class="ext-btn ext-dubizzle">${t.searchOn} Dubizzle ↗</a>
+                    </div>
+                `;
+                container.appendChild(extBox);
+            }
+        }
+
+        function filterProducts() {
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            const filtered = productsData.filter(p => {
+                const titleAr = p.title.ar.toLowerCase();
+                const titleEn = p.title.en.toLowerCase();
+                const storeAr = p.storeName.ar.toLowerCase();
+                const storeEn = p.storeName.en.toLowerCase();
+
+                const matchesQuery = titleAr.includes(query) || titleEn.includes(query) || storeAr.includes(query) || storeEn.includes(query);
+                const matchesCategory = selectedCategory === 'all' || p.category === selectedCategory;
+
+                return matchesQuery && matchesCategory;
+            });
+            renderProducts(filtered, query);
+        }
+        // Initial Load
+        renderProducts(productsData);
+    </script>
+</body>
+</html>
